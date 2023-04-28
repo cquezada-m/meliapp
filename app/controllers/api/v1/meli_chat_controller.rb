@@ -24,4 +24,3 @@ class Api::V1::MeliChatController < ApplicationController
     @user = User.find_by!(rut: params[:rut])
   end
 end
-

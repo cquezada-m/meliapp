@@ -2,14 +2,12 @@ class PaperRollsRequest < ApplicationRecord
   BASE_VALUE_PER_ROLL = 700
 
   belongs_to :user
-  has_many :accounts, through: :user
+  has_many :funds_transfers, through: :user
 
   validate :insufficient_balance?
-  after_create :attach_funds_transfer!
+  after_create :attach_withdrawal!
 
-  def total_balance
-    accounts.sum(:balance)
-  end
+  delegate :balance, to: :user
 
   def price
     BASE_VALUE_PER_ROLL * amount
@@ -18,11 +16,15 @@ class PaperRollsRequest < ApplicationRecord
   private
 
   def insufficient_balance?
-    if price > total_balance
-      self.errors.add :base, 'Saldo insuficiente'
+    if balance && price > balance
+      errors.add(:base, 'Saldo insuficiente')
     end
   end
 
-  def attach_funds_transfer!
+  def attach_withdrawal!
+    FundsTransfer.withdrawal.create(
+      user: user,
+      amount: price,
+    )
   end
 end
