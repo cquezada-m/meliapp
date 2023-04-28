@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-function App() {
+import { Grid } from '@mui/material';
+import Chat from './components/Chat';
+import { styled } from '@mui/material/styles';
+
+const ScrolleableGrid = styled(Grid)(() => ({
+  overflowY: 'scroll',
+  '&::-webkit-scrollbar': {
+    display: 'none',
+  },
+  msOverflowStyle: 'none',
+  scrollbarWidth: 'none',
+  height: '75vh',
+  borderRadius: '16px',
+  backgroundColor: '#fff',
+  padding: '1rem',
+  maxHeight: '100%',
+}));
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grid
+      item
+      container
+      direction="row"
+      alignItems="center"
+      justifyContent="center"
+      style={{
+        minHeight: '100vh',
+        backgroundColor: '#fff159',
+      }}
+    >
+      <ScrolleableGrid item xs={8} md={4} alignItems="center" justifyContent="center">
+        <Chat></Chat>
+      </ScrolleableGrid>
+    </Grid>
   );
-}
+};
 
 export default App;
