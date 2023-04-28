@@ -12,15 +12,16 @@ const actions = [
 ];
 
 const Intentions = () => {
-  const [selectedAction, updateSelectedAction] = useState(actions[0]);
+  const [selectedAction, updateSelectedAction] = useState(null);
 
   return (
     <Box>
       <Grid container direction="row" justifyContent="space-evenly" alignItems="center">
-        {actions.map((action) => {
-          const selected = action.id === selectedAction.id;
+        {actions.map((action, index) => {
+          const selected = action.id === selectedAction?.id;
           return (
             <Chip
+              key={`action-${index}`}
               color={selected ? 'primary' : 'default'}
               label={action.label}
               sx={{ m: 0.5 }}
@@ -29,9 +30,11 @@ const Intentions = () => {
           );
         })}
       </Grid>
-      <Grid container direction="row" justifyContent="space-evenly" alignItems="center">
-        <h1>{selectedAction.formComponent}</h1>
-      </Grid>
+      {selectedAction && (
+        <Grid container direction="row" justifyContent="space-evenly" alignItems="center">
+          <h1>{selectedAction.formComponent}</h1>
+        </Grid>
+      )}
     </Box>
   );
 };

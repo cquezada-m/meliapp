@@ -4,13 +4,7 @@ import { Grid } from '@mui/material';
 import Chat from './components/Chat';
 import { styled } from '@mui/material/styles';
 
-const ScrolleableGrid = styled(Grid)(() => ({
-  overflowY: 'scroll',
-  '&::-webkit-scrollbar': {
-    display: 'none',
-  },
-  msOverflowStyle: 'none',
-  scrollbarWidth: 'none',
+const ChatContainer = styled(Grid)(() => ({
   height: '75vh',
   borderRadius: '16px',
   backgroundColor: '#fff',
@@ -31,9 +25,9 @@ const App = () => {
         backgroundColor: '#fff159',
       }}
     >
-      <ScrolleableGrid item xs={8} md={4} alignItems="center" justifyContent="center">
+      <ChatContainer item xs={8} md={4} alignItems="center" justifyContent="center">
         <Chat></Chat>
-      </ScrolleableGrid>
+      </ChatContainer>
     </Grid>
   );
 };

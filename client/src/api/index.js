@@ -8,7 +8,7 @@ import client from './client';
  */
 const fetchDeposit = async (urlParams) => {
   try {
-    const response = await client.get('/deposit', urlParams);
+    const response = await client.get('/deposit', { params: urlParams });
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -42,7 +42,7 @@ const createPaperRollsRequest = async (body) => {
  */
 const fetchIndicator = async (urlParams) => {
   try {
-    const response = await client.get('/indicator', urlParams);
+    const response = await client.get('/indicator', { params: urlParams });
     console.log(response.data);
     return response.data;
   } catch (error) {

@@ -18,7 +18,8 @@ class Api::V1::MeliChatController < ApplicationController
   end
 
   def indicator
-    response = ApiService.instance.get(indicator_params[:name])
+    endpoint = indicator_params[:name] + '/2023'
+    response = ApiService.instance.get(endpoint)
     render json: response
   end
 
