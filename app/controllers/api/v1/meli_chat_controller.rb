@@ -17,7 +17,10 @@ class Api::V1::MeliChatController < ApplicationController
     end
   end
 
-  def indicator; end
+  def indicator
+    response = ApiService.instance.get(indicator_params[:name])
+    render json: response
+  end
 
   private
 
