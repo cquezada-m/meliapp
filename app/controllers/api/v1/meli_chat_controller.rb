@@ -4,8 +4,9 @@ class Api::V1::MeliChatController < ApplicationController
   before_action :set_user, only: [:deposit, :paper_rolls_request]
 
   def deposit
-    records = @user.funds_transfers.deposit_at(deposit_params[:available_at])
-    render json: records, each_serializer: FundsTransferSerializer
+    available_at = deposit_params[:available_at].to_date
+    funds = @user.funds_transfers.total_available(available_at)
+    render json: { funds: }
   end
 
   def paper_rolls_request
