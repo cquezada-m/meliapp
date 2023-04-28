@@ -32,7 +32,7 @@ class RutFormatValidator < ActiveModel::EachValidator
     factor = 2
 
     # Iterate over digits of base, multiplying each by a factor and summing the results
-    while base > 0
+    while base.positive?
       sum += factor * (base % 10)
       factor = factor == 7 ? 2 : factor + 1 # Alternate factor between 2 and 7
       base /= 10
@@ -40,8 +40,8 @@ class RutFormatValidator < ActiveModel::EachValidator
 
     # Calculate expected verifier based on sum
     expected_verifier = 11 - (sum % 11)
-    expected_verifier = expected_verifier == 11 ? 0 : expected_verifier
-    expected_verifier = expected_verifier == 10 ? 'K' : expected_verifier
+    expected_verifier = 0 if expected_verifier == 11
+    expected_verifier = 'K' if expected_verifier == 10
     expected_verifier
   end
 end

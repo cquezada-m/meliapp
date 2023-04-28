@@ -23,7 +23,7 @@ class PaperRollsRequest < ApplicationRecord
 
   def attach_withdrawal!
     FundsTransfer.withdrawal.create(
-      user: user,
+      user:,
       amount: price,
     )
   end
