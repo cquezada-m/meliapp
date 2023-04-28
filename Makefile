@@ -7,6 +7,9 @@ app-build:
 app-bash:
 	docker-compose run --rm api bash
 
+app-bundle:
+	docker-compose run --rm api bundle install
+
 front-bash:
 	docker-compose run --rm frontend sh
 
