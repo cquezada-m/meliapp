@@ -9,11 +9,9 @@ import client from './client';
 const fetchDeposit = async (urlParams) => {
   try {
     const response = await client.get('/deposit', { params: urlParams });
-    console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error(error);
-    return null;
+    return error;
   }
 };
 
@@ -26,11 +24,9 @@ const fetchDeposit = async (urlParams) => {
 const createPaperRollsRequest = async (body) => {
   try {
     const response = await client.post('/paper_rolls_request', body);
-    console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error(error);
-    return null;
+    return error;
   }
 };
 
@@ -43,11 +39,9 @@ const createPaperRollsRequest = async (body) => {
 const fetchIndicator = async (urlParams) => {
   try {
     const response = await client.get('/indicator', { params: urlParams });
-    console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error(error);
-    return null;
+    return error;
   }
 };
 

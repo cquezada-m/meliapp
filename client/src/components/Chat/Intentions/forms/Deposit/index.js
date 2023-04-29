@@ -1,23 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Box, Grid, Button, TextField, Alert } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DepositSchema from './schema';
 
-import { Box, Grid, Button, TextField } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import * as dayjs from 'dayjs';
+import { formatCurrency, isEmpty } from '../../../../../utils/functions';
+
+import { fetchDeposit } from '../../../../../api';
 
 const DepositForm = () => {
+  const [fundsData, updateFundsData] = useState({});
+  const hasBalance = !isEmpty(fundsData) && fundsData.amount > 0;
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    setError,
+    formState: { isValid, isDirty, errors },
   } = useForm({
     resolver: yupResolver(DepositSchema),
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const response = await fetchDeposit(data);
+
+    if (response?.error) {
+      setError('serverError', {
+        message: response?.details,
+      });
+    }
+
+    updateFundsData({ ...data, amount: response.funds });
+  };
+
+  const fundsMessage = () =>
+    hasBalance ? `Fondos disponibles ${formatCurrency(fundsData.amount)} ` : 'No tiene fondos disponibles';
+
+  const renderAlert = () => {
+    const errorMessage = errors?.serverError?.message;
+
+    if (!errorMessage && isEmpty(fundsData)) return null;
+
+    const color = errorMessage ? 'error' : hasBalance ? 'success' : 'warning';
+    const message = errorMessage ? errorMessage : fundsMessage();
+
+    return <Alert severity={color}>{message}</Alert>;
+  };
 
   return (
     <Box
@@ -44,9 +75,13 @@ const DepositForm = () => {
           helperText={errors.availableAt?.message}
         />
 
-        <Button onClick={handleSubmit(onSubmit)} variant="contained">
+        <Button disabled={!isDirty || !isValid} onClick={handleSubmit(onSubmit)} variant="contained">
           Consultar
         </Button>
+
+        <Grid item container alignItems="center" justifyContent="center" sx={{ mt: 5 }}>
+          {renderAlert()}
+        </Grid>
       </Grid>
     </Box>
   );

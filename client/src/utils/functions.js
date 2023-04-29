@@ -9,3 +9,13 @@ export const isEmpty = (input) => {
     return false;
   }
 };
+
+export const formatCurrency = (value) => {
+  const formattedValue = Number(value).toLocaleString('es-CL', {
+    style: 'currency',
+    currency: 'CLP',
+    minimumFractionDigits: 0,
+  });
+
+  return formattedValue;
+};

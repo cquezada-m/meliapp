@@ -15,7 +15,8 @@ const IndicatorForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    setError,
+    formState: { isValid, isDirty, errors },
   } = useForm({
     resolver: yupResolver(IndicatorSchema),
   });
@@ -51,7 +52,7 @@ const IndicatorForm = () => {
           ))}
         </TextField>
 
-        <Button onClick={handleSubmit(onSubmit)} variant="contained">
+        <Button disabled={!isDirty || !isValid} onClick={handleSubmit(onSubmit)} variant="contained">
           Consultar
         </Button>
 

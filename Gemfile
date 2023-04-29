@@ -14,6 +14,7 @@ gem 'puma', '~> 5.0'
 
 gem 'active_model_serializers'
 gem 'faraday'
+gem 'rails-i18n'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 

@@ -1,21 +1,26 @@
 import React from 'react';
+import { Box, Grid, Button, TextField } from '@mui/material';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import PaperRollsRequestSchema from './schema';
 
-import { Box, Grid, Button, TextField } from '@mui/material';
+import { createPaperRollsRequest } from '../../../../../api';
+import { isEmpty } from '../../../../../utils/functions';
 
 const PaperRollsRequestForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    setError,
+    formState: { isValid, isDirty, errors },
   } = useForm({
     resolver: yupResolver(PaperRollsRequestSchema),
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const response = await createPaperRollsRequest(data);
+  };
 
   return (
     <Box
@@ -53,7 +58,7 @@ const PaperRollsRequestForm = () => {
           helperText={errors.paperRoll?.amount?.message}
         />
 
-        <Button onClick={handleSubmit(onSubmit)} variant="contained">
+        <Button disabled={!isDirty || !isValid} onClick={handleSubmit(onSubmit)} variant="contained">
           Solicitar
         </Button>
       </Grid>

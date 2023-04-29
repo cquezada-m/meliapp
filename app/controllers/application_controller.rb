@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  before_action :transform_params
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActionController::RoutingError, with: :route_not_found
   rescue_from ActionController::ParameterMissing, with: :parameter_missing
@@ -6,6 +7,10 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordInvalid, with: :unprocessable_entity
 
   private
+
+  def transform_params
+    params.transform_keys!(&:underscore)
+  end
 
   def record_not_found
     render json: { error: 'Record not found', status: 404, details: 'The requested record could not be found' }, status: :not_found
