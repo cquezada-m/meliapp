@@ -1,3 +1,6 @@
+# Wkhtmltopfd installation stage
+FROM surnet/alpine-wkhtmltopdf:3.16.2-0.12.6-small as wkhtmltopdf_image
+
 FROM ruby:3.1.1-alpine3.15
 
 RUN apk update && \
@@ -44,6 +47,8 @@ RUN echo "alias la='ls -A'" >> $HOME/.bashrc
 RUN echo "alias l='ls -CF'" >> $HOME/.bashrc
 RUN echo "alias q='exit'" >> $HOME/.bashrc
 RUN echo "alias c='clear'" >> $HOME/.bashrc
+
+COPY --from=wkhtmltopdf_image /bin/wkhtmltopdf /usr/local/bin/
 
 EXPOSE 8080
 

@@ -9,7 +9,6 @@ AllCops:
     - bin/*
     - vendor/**/*
     - client/**/*
-    - infrastructure/**/*
     - tmp/**/*
 
 Metrics/ClassLength:

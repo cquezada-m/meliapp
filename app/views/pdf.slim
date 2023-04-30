@@ -1,0 +1,41 @@
+doctype html
+html
+  head
+    title Solicitud de Papel
+    css:
+      table {
+        border-collapse: collapse;
+      }
+      th, td {
+        border: 1px solid #ccc;
+        padding: 5px;
+      }
+      .yellow {
+        background-color: yellow;
+      }
+      .white {
+        background-color: white;
+      }
+  body
+    table
+      thead
+        tr
+          th Key
+          th Value
+      tbody
+        tr
+          td.address Dirección
+          td = paper_rolls.address
+        tr
+          td.amount Cantidad Solcitada
+          td = paper_rolls.amount
+        tr
+          td.user.yellow User Information
+          td.white
+            table
+              tr
+                td.rut RUT
+                td = paper_rolls.user.rut
+              tr
+                td.name Nombre
+                td = paper_rolls.user.name

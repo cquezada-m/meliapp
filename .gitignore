@@ -20,6 +20,8 @@
 .env
 
 # Ignore uploaded files in development.
+/public/pdf*
+!/public/pdf.keep
 /storage/*
 !/storage/.keep
 /tmp/storage/*

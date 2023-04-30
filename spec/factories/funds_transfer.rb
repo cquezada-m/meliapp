@@ -4,5 +4,13 @@ FactoryBot.define do
     amount { Faker::Number.between(from: 1.0, to: 99999999) }
     available_at { Faker::Date.in_date_period }
     kind { FundsTransfer.kinds.keys.sample }
+
+    trait :withdrawal do
+      kind { FundsTransfer.kinds.keys[0] }
+    end
+
+    trait :deposit do
+      kind { FundsTransfer.kinds.keys[1] }
+    end
   end
 end

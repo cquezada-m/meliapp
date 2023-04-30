@@ -12,13 +12,17 @@ class Api::V1::MeliChatController < ApplicationController
   def paper_rolls_request
     paper_roll = @user.paper_rolls_requests.new(paper_rolls_request_params[:paper_roll])
 
-    if paper_roll.save!
-      render json: paper_roll, serializer: PaperRollsRequestSerializer
+    PaperRollsRequest.transaction do
+      if paper_roll.save!
+        file_url = PdfService.export(paper_roll)
+        paper_roll.update!(pdf_url: file_url)
+        render json: paper_roll, serializer: PaperRollsRequestSerializer
+      end
     end
   end
 
   def indicator
-    endpoint = indicator_params[:name] + '/2023'
+    endpoint = "#{indicator_params[:name]}/2023"
     response = ApiService.instance.get(endpoint)
     render json: response
   end

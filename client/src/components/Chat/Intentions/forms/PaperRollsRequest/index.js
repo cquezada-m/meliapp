@@ -1,5 +1,6 @@
-import React from 'react';
-import { Box, Grid, Button, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Grid, Button, TextField, Alert, AlertTitle, Typography } from '@mui/material';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,6 +10,8 @@ import { createPaperRollsRequest } from '../../../../../api';
 import { isEmpty } from '../../../../../utils/functions';
 
 const PaperRollsRequestForm = () => {
+  const [paperRolls, updatePaperRolls] = useState({});
+
   const {
     register,
     handleSubmit,
@@ -20,7 +23,36 @@ const PaperRollsRequestForm = () => {
 
   const onSubmit = async (data) => {
     const response = await createPaperRollsRequest(data);
+
+    if (response?.status === 404) {
+      setError('rut', {
+        message: response?.details,
+      });
+    }
+
+    updatePaperRolls(response);
   };
+
+  const successBtn = () => (
+    <Button
+      href={paperRolls.pdf_url}
+      target="_blank"
+      startIcon={<AttachFileIcon />}
+      size="small"
+      color="success"
+      variant="outlined"
+      sx={{ mt: 1 }}
+    >
+      Ver Reporte
+    </Button>
+  );
+
+  const renderAlert = () => (
+    <Alert severity="success">
+      <AlertTitle>Solicitud generada correctamente</AlertTitle>
+      {successBtn()}
+    </Alert>
+  );
 
   return (
     <Box
@@ -61,6 +93,10 @@ const PaperRollsRequestForm = () => {
         <Button disabled={!isDirty || !isValid} onClick={handleSubmit(onSubmit)} variant="contained">
           Solicitar
         </Button>
+
+        <Grid item container alignItems="center" justifyContent="center" sx={{ mt: 5 }}>
+          {!isEmpty(errors) && renderAlert()}
+        </Grid>
       </Grid>
     </Box>
   );

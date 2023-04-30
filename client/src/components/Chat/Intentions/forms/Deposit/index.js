@@ -12,8 +12,8 @@ import { formatCurrency, isEmpty } from '../../../../../utils/functions';
 import { fetchDeposit } from '../../../../../api';
 
 const DepositForm = () => {
-  const [fundsData, updateFundsData] = useState({});
-  const hasBalance = !isEmpty(fundsData) && fundsData.amount > 0;
+  const [fundsData, updateFundsData] = useState(null);
+  const hasBalance = !isEmpty(fundsData) && fundsData?.amount > 0;
 
   const {
     register,
@@ -27,8 +27,8 @@ const DepositForm = () => {
   const onSubmit = async (data) => {
     const response = await fetchDeposit(data);
 
-    if (response?.error) {
-      setError('serverError', {
+    if (response?.status === 404) {
+      setError('rut', {
         message: response?.details,
       });
     }
@@ -36,18 +36,15 @@ const DepositForm = () => {
     updateFundsData({ ...data, amount: response.funds });
   };
 
-  const fundsMessage = () =>
-    hasBalance ? `Fondos disponibles ${formatCurrency(fundsData.amount)} ` : 'No tiene fondos disponibles';
-
   const renderAlert = () => {
-    const errorMessage = errors?.serverError?.message;
+    if (!isEmpty(errors)) return null;
 
-    if (!errorMessage && isEmpty(fundsData)) return null;
-
-    const color = errorMessage ? 'error' : hasBalance ? 'success' : 'warning';
-    const message = errorMessage ? errorMessage : fundsMessage();
-
-    return <Alert severity={color}>{message}</Alert>;
+    const color = hasBalance ? 'success' : 'warning';
+    return (
+      <Alert severity={color}>
+        {hasBalance ? `Fondos disponibles ${formatCurrency(fundsData?.amount)} ` : 'No tiene fondos disponibles'}
+      </Alert>
+    );
   };
 
   return (
