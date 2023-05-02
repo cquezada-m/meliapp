@@ -22,7 +22,7 @@ const Intentions = () => {
           return (
             <Chip
               key={`action-${index}`}
-              color={selected ? 'primary' : 'default'}
+              color={selected ? 'warning' : 'default'}
               label={action.label}
               sx={{ m: 0.5 }}
               onClick={() => updateSelectedAction(action)}

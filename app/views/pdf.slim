@@ -3,39 +3,51 @@ html
   head
     title Solicitud de Papel
     css:
-      table {
-        border-collapse: collapse;
+      .center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      th, td {
-        border: 1px solid #ccc;
-        padding: 5px;
+      .meli-icon {
+        border-radius: 50%;
       }
-      .yellow {
-        background-color: yellow;
+      .styled-table thead tr {
+        background-color: #FFE901;
+        color: #ffffff;
+        text-align: left;
       }
-      .white {
-        background-color: white;
+      .styled-table th,
+      .styled-table td {
+        padding: 12px 15px;
       }
+      .styled-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+      }
+      .styled-table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+      }
+      .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid #FFE901;
+      }
+     
   body
-    table
+    .center
+      img.meli-icon src="#{ENV['API_DOMAIN']}/meli.png" width="80px"
+
+    table.styled-table
       thead
         tr
-          th Key
-          th Value
-      tbody
+          td colspan='2' Solicitud Rollos de Papel
+      tbody      
         tr
-          td.address Dirección
+          td Dirección
           td = paper_rolls.address
         tr
-          td.amount Cantidad Solcitada
+          td Cantidad Solicitada
           td = paper_rolls.amount
         tr
-          td.user.yellow User Information
-          td.white
-            table
-              tr
-                td.rut RUT
-                td = paper_rolls.user.rut
-              tr
-                td.name Nombre
-                td = paper_rolls.user.name
+          td RUT
+          td = paper_rolls.user.rut
+        tr
+          td Nombre
+          td = paper_rolls.user.name

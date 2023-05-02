@@ -9,9 +9,12 @@ import { fetchIndicator } from '../../../../../api';
 import { IndicatorList } from '../../../../../utils/IndicatorList';
 import IndicatorChart from './chart';
 import { isEmpty } from '../../../../../utils/functions';
+import { handleError } from '../utils';
 
 const IndicatorForm = () => {
   const [chartData, updateChartData] = useState([]);
+  const [isFetched, updateIsFetched] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -23,7 +26,11 @@ const IndicatorForm = () => {
 
   const onSubmit = async (data) => {
     const response = await fetchIndicator(data);
+    handleError(response, setError);
+
     const { serie } = response;
+
+    updateIsFetched(!isFetched);
     updateChartData(serie);
   };
 

@@ -4,6 +4,9 @@ class PaperRollsRequest < ApplicationRecord
   belongs_to :user
   has_many :funds_transfers, through: :user
 
+  validates :address, presence: true
+  validates :amount, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 100 }
+
   validate :insufficient_balance?
   after_create :attach_withdrawal!
 
@@ -17,7 +20,7 @@ class PaperRollsRequest < ApplicationRecord
 
   def insufficient_balance?
     if balance && price > balance
-      errors.add(:base, 'Saldo insuficiente')
+      errors.add(:amount, 'Saldo insuficiente')
     end
   end
 

@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { Box, Grid, Button, TextField, Alert } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DepositSchema from './schema';
 
 import * as dayjs from 'dayjs';
 import { formatCurrency, isEmpty } from '../../../../../utils/functions';
+import { handleError } from '../utils';
 
 import { fetchDeposit } from '../../../../../api';
 
 const DepositForm = () => {
-  const [fundsData, updateFundsData] = useState(null);
+  const [fundsData, updateFundsData] = useState({ isFetched: false });
   const hasBalance = !isEmpty(fundsData) && fundsData?.amount > 0;
 
   const {
@@ -26,18 +27,14 @@ const DepositForm = () => {
 
   const onSubmit = async (data) => {
     const response = await fetchDeposit(data);
+    handleError(response, setError);
 
-    if (response?.status === 404) {
-      setError('rut', {
-        message: response?.details,
-      });
-    }
-
-    updateFundsData({ ...data, amount: response.funds });
+    updateFundsData({ ...data, amount: response.funds, isFetched: true });
   };
 
   const renderAlert = () => {
-    if (!isEmpty(errors)) return null;
+    console.log('errors and isFetched', { errors, isFetched: fundsData.isFetched });
+    if (!isEmpty(errors) || !fundsData.isFetched) return null;
 
     const color = hasBalance ? 'success' : 'warning';
     return (
@@ -72,7 +69,12 @@ const DepositForm = () => {
           helperText={errors.availableAt?.message}
         />
 
-        <Button disabled={!isDirty || !isValid} onClick={handleSubmit(onSubmit)} variant="contained">
+        <Button
+          disabled={!isDirty || !isValid}
+          loadingPosition="start"
+          onClick={handleSubmit(onSubmit)}
+          variant="contained"
+        >
           Consultar
         </Button>
 

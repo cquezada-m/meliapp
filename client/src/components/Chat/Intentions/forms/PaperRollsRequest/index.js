@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Grid, Button, TextField, Alert, AlertTitle, Typography } from '@mui/material';
+import { Box, Grid, Button, TextField, Alert, AlertTitle } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 import { useForm } from 'react-hook-form';
@@ -11,6 +11,7 @@ import { isEmpty } from '../../../../../utils/functions';
 
 const PaperRollsRequestForm = () => {
   const [paperRolls, updatePaperRolls] = useState({});
+  const [isFetched, updateIsFetched] = useState(false);
 
   const {
     register,
@@ -30,29 +31,40 @@ const PaperRollsRequestForm = () => {
       });
     }
 
+    if (response?.errors) {
+      const { errors } = response;
+
+      Object.keys(errors).forEach((attribute) => {
+        errors[attribute].forEach((message) => {
+          setError(`paperRoll.${attribute}`, { message });
+        });
+      });
+    }
+
+    updateIsFetched(!isFetched);
     updatePaperRolls(response);
   };
 
-  const successBtn = () => (
-    <Button
-      href={paperRolls.pdf_url}
-      target="_blank"
-      startIcon={<AttachFileIcon />}
-      size="small"
-      color="success"
-      variant="outlined"
-      sx={{ mt: 1 }}
-    >
-      Ver Reporte
-    </Button>
-  );
+  const renderAlert = () => {
+    if (!isEmpty(errors) || !isFetched) return null;
 
-  const renderAlert = () => (
-    <Alert severity="success">
-      <AlertTitle>Solicitud generada correctamente</AlertTitle>
-      {successBtn()}
-    </Alert>
-  );
+    return (
+      <Alert severity="success">
+        <AlertTitle>Solicitud generada correctamente</AlertTitle>
+        <Button
+          href={paperRolls.pdf_url}
+          target="_blank"
+          startIcon={<AttachFileIcon />}
+          size="small"
+          color="success"
+          variant="outlined"
+          sx={{ mt: 1 }}
+        >
+          Ver Reporte
+        </Button>
+      </Alert>
+    );
+  };
 
   return (
     <Box
@@ -95,7 +107,7 @@ const PaperRollsRequestForm = () => {
         </Button>
 
         <Grid item container alignItems="center" justifyContent="center" sx={{ mt: 5 }}>
-          {!isEmpty(errors) && renderAlert()}
+          {renderAlert()}
         </Grid>
       </Grid>
     </Box>

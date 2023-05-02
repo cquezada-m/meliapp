@@ -22,7 +22,7 @@ const App = () => {
       justifyContent="center"
       style={{
         minHeight: '100vh',
-        backgroundColor: '#fff159',
+        backgroundColor: '#FFE901',
       }}
     >
       <ChatContainer item xs={8} md={4} alignItems="center" justifyContent="center">
