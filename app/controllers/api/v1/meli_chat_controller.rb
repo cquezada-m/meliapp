@@ -5,7 +5,7 @@ class Api::V1::MeliChatController < ApplicationController
 
   def deposit
     available_at = deposit_params[:available_at].to_date
-    funds = @user.funds_transfers.total_available(available_at)
+    funds = @user.funds_transfers.balance_at(available_at)
     render json: { funds: }
   end
 

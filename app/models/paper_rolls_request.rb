@@ -10,17 +10,20 @@ class PaperRollsRequest < ApplicationRecord
   validate :insufficient_balance?
   after_create :attach_withdrawal!
 
-  delegate :balance, to: :user
-
   def price
     BASE_VALUE_PER_ROLL * amount
+  end
+
+  def tomorrow_balance
+    tomorrow = Date.today + 1.day
+    funds_transfers.balance_at(tomorrow)
   end
 
   private
 
   def insufficient_balance?
-    if balance && price > balance
-      errors.add(:amount, 'Saldo insuficiente')
+    if tomorrow_balance && price > tomorrow_balance
+      errors.add(:amount, 'Saldo insuficiente para cubrir esta cantidad')
     end
   end
 
@@ -28,6 +31,7 @@ class PaperRollsRequest < ApplicationRecord
     FundsTransfer.withdrawal.create(
       user:,
       amount: price,
+      available_at: Date.today + 1.day,
     )
   end
 end

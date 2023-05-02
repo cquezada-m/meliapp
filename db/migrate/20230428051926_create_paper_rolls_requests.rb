@@ -4,6 +4,7 @@ class CreatePaperRollsRequests < ActiveRecord::Migration[7.0]
       t.references :user, null: false, foreign_key: true
       t.string :address
       t.integer :amount
+      t.string :pdf_url
 
       t.timestamps
     end

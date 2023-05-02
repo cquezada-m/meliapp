@@ -46,6 +46,9 @@ html
           td Cantidad Solicitada
           td = paper_rolls.amount
         tr
+          td Saldo Restante #{(paper_rolls.created_at + 1.days).strftime('%d/%m/%y')}
+          td = paper_rolls.tomorrow_balance
+        tr
           td RUT
           td = paper_rolls.user.rut
         tr

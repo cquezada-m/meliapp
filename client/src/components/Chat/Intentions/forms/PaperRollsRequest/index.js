@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import PaperRollsRequestSchema from './schema';
 
 import { createPaperRollsRequest } from '../../../../../api';
-import { isEmpty } from '../../../../../utils/functions';
+import { formatCurrency, isEmpty } from '../../../../../utils/functions';
 
 const PaperRollsRequestForm = () => {
   const [paperRolls, updatePaperRolls] = useState({});
@@ -51,6 +51,7 @@ const PaperRollsRequestForm = () => {
     return (
       <Alert severity="success">
         <AlertTitle>Solicitud generada correctamente</AlertTitle>
+        <h5>Saldo Restante para mañana: {formatCurrency(paperRolls.tomorrow_balance)}</h5>
         <Button
           href={paperRolls.pdf_url}
           target="_blank"

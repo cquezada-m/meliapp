@@ -1,24 +1,60 @@
-# README
+# MeliApp
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Technical challenge for selection process
 
-Things you may want to cover:
+<img width="1685" alt="image" src="https://user-images.githubusercontent.com/93418612/235746411-f743254b-1748-4ac1-9447-af6602028025.png">
 
-* Ruby version
+How to run this app?
 
-* System dependencies
+## Run Locally
 
-* Configuration
+Clone the project
 
-* Database creation
+```bash
+  git clone git@github.com:cquezada-m/meliapp.git
+```
 
-* Database initialization
+Go to the project directory
 
-* How to run the test suite
+```bash
+  cd meliapp
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+To run this project, you will need to add the following environment variables to your .env file
 
-* Deployment instructions
+```bash
+  DB_HOST=db
+  POSTGRES_DB=meli_app
+  POSTGRES_USER=meli_user
+  POSTGRES_PASSWORD=AMeliappRedelcom2023
+  API_HOST=localhost
+  API_PORT=8080
+  API_DOMAIN=http://${API_HOST}:${API_PORT}
+  ACTION_CABLE_URL=ws://${API_HOST}/websocket
+  INDICATORS_BASE_URL=https://mindicador.cl/api/
+  REACT_APP_API_ENDPOINT=${API_DOMAIN}/api/v1/meli_chat
+```
 
-* ...
+build dependencies
+
+```bash
+  make app-build
+```
+
+setup database
+
+```bash
+  make app-db-setup
+```
+
+add dummy data
+
+```bash
+  make app-dummy-data
+```
+
+Start app
+
+```bash
+  make app-start
+```
